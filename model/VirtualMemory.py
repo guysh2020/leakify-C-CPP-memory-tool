@@ -1,7 +1,7 @@
 # from Owner import Owner
 # from Allocation import Allocation
 # from Algorithem import algorithemInterface
-import pandas  as pd
+import pandas as pd
 import re
 
 class VirtualMemory:
@@ -21,13 +21,14 @@ class VirtualMemory:
         with open(text_file, 'r') as read_text:
             for line in read_text:
                 if 'class' in line:
-                    #listClass.append(line)
-                    self.classTypes.append(line)
-        print( self.classTypes)
+                    listClass.append(line)
+        wordClass = re.compile("^class (\w+)")
+        for i in listClass:
+            m=re.search(wordClass,i)
+            if m != None:
+                self.classTypes.append(m.group(1))
+        # print(self.classTypes)
 
-
-
-        pass
         # go throghy all files
         # look for class keyword.
         #if present take next word after whitespace.
@@ -54,9 +55,9 @@ class VirtualMemory:
 # ([a-zA-Z_][a-zA-Z0-9_]*)([\n\r\s]+)([a-zA-Z_][a-zA-Z0-9_]*)::([a-zA-Z_][a-zA-Z0-9_]*)\((.*)\)([\n\r\s]+)
 
 a = VirtualMemory()
-a.findFunctions()
+#a.findFunctions()
 
-#a.findTypes()
+a.findTypes()
 
 
 
