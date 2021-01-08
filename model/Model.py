@@ -1,5 +1,7 @@
 
 class Model:
+    fileName = 0
+
     def uploadFile(self):
         pass
 
