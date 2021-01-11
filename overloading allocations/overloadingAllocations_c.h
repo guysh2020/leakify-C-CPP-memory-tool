@@ -1,8 +1,5 @@
 #pragma once
 
-// #include<iostream>
-// #include <cstdio>
-// #include <cstdlib>
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -34,33 +31,6 @@ void my_free(void *ptr, const char *file, int line, const char *func)
     free(ptr);
 }
 
-// inline void* operator new(size_t sz,const char *file, int line, const char *func) 
-// {
-//     void *ptr = std::malloc(sz);
-//     fprintf(fp,"0 Allocated = %s, %i, %s, #%p[%zu]\n",file,line,func,ptr,sz); 
-//     return ptr;
-// }
-
-// inline void* operator new[](std::size_t sz,const char* file, unsigned int line,const char *func) 
-// {
-//     void *ptr = std::malloc(sz);
-//     fprintf(fp,"0 Allocated = %s, %i, %s, #%p[%zu]\n",file,line,func,ptr,sz); 
-//     return ptr;
-// }
-
-
-// inline void operator delete(void* ptr, std::size_t sz) 
-// {
-//     fprintf(fp,"1 freeing = #%p[%zu]\n",ptr,sz); 
-//     free(ptr);
-// }
-
-// inline void operator delete[](void* ptr, std::size_t sz) 
-// {
-//     fprintf(fp,"1 freeing = #%p[%zu]\n",ptr,sz);
-//     free(ptr);
-// }
-
 void summerize() 
 {
     fclose(fp);
@@ -69,5 +39,4 @@ void summerize()
 #define malloc(X) my_malloc( X, __FILE__, __LINE__, __FUNCTION__)
 #define calloc(X,Y) my_calloc( X,Y, __FILE__, __LINE__, __FUNCTION__)
 #define free(X) my_free( X, __FILE__, __LINE__, __FUNCTION__)
-// #define new new(__FILE__, __LINE__,__FUNCTION__)
 
