@@ -1,0 +1,5 @@
+0 Allocated = main.cpp, 13, main, #007719a8[4]
+0 Allocated = main.cpp, 14, main, #007719b8[28]
+0 Allocated = main.cpp, 17, main, #007719e0[172]
+1 freeing = #007719b8[28]
+1 freeing = #007719e0[172]
