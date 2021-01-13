@@ -53,24 +53,19 @@ inline void operator delete(void* ptr, std::size_t sz)
     free(ptr);
 }
 
-inline void operator delete[](void* ptr, std::size_t sz) 
+void operator delete[](void* ptr) 
 {
-    fprintf(fp,"1 freeing = #%p[%zu]\n",ptr,sz);
+    fprintf(fp,"1 freeing = #%p\n",ptr);
     free(ptr);
 }
+
+
 
 static void summerize() 
 {
     fclose(fp);
 }
 
-// inline FILE *fopen(const char * fileName,const char * mode) 
-// {
-//     printf("%s","here");
-//     FILE * fp = fopen(fileName,mode);
-//     printf("%s","here1");
-//     return fp;
-// }
 
 #define malloc(X) my_malloc( X, __FILE__, __LINE__, __FUNCTION__)
 #define calloc(X,Y) my_calloc( X,Y, __FILE__, __LINE__, __FUNCTION__)
