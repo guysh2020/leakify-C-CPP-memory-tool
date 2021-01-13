@@ -8,8 +8,8 @@ class App:
         #setting title
         root.title("Leakify")
         #setting window size
-        width=800
-        height=500
+        width=1000
+        height=650
         screenwidth = root.winfo_screenwidth()
         screenheight = root.winfo_screenheight()
         alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)

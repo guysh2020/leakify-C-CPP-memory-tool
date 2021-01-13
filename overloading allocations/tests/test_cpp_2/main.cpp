@@ -7,25 +7,34 @@
 #include "student.h"
 
 //
-#include "overloadingAllocations.h"
+#include "overloadingAllocations_cpp.h"
 //
   
 using namespace std; 
 
   
+student::student() 
+{ 
+    this->name = "default"; 
+    this->age = 0; 
+} 
+student::student(string name, int age) 
+{ 
+    this->name = name; 
+    this->age = age; 
+} 
+void student::display() 
+{ 
+    cout<< "Name:" << name << endl; 
+    cout<< "Age:" << age << endl; 
+}
+
 int main() 
 { 
     openFile();
-    FILE *fp = fopen("sivan.txt","r");
-    int *x = new int(10);
     student * p = new student("Yash", 24); 
-
-    p->display(); 
     student *a = new student[6];
-    for (int i=0 ;i<5;i++) {
-        a[i].display();
-    }
-
+    
     delete p; 
     delete[] a;
 
