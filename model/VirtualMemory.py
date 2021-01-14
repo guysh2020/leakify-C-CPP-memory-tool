@@ -1,101 +1,115 @@
 # from Owner import Owner
 # from Allocation import Allocation
-# from Algorithem import algorithemInterface
-import pandas as pd
+
+from enum import Enum
+
+
+import os
 import re
+import subprocess
 
-class VirtualMemory:
-    allocations = []
-    ownerShip = {}
-    functions = {}  # main: (file_name, line)
-    premativeTypes = ["int","float","double","char","bool","void"]
-    classTypes = []
+class State(Enum):
+    OK = 0
+    MAIN_MISSING = 1
+    MIXED_EXTENSIONS = 2
+    MULTIPLE_MAINS = 3
+    COMPILATION_ERRORS = 4
 
 
+class Allocation:
+    def __init__(self, str):
+        raw = str.split('=')[1].split(',')
+        raw_address = raw[3].split('[')
+        self.module = raw[0]
+        self.line = raw[1]
+        self.function = raw[2]
+        self.address = raw_address[0]
+        self.size = (raw_address[1])[:-2]
+
+    def __str__(self):
+        return f"\33[91min module: {self.module}, in function: {self.function}, on line: {self.line} the program allocated {self.size} bytes at address: {self.address} that was never freed"
+
+
+
+
+class preProcess:
     def __init__(self):
+        self.path_to_folder = 'C:\\Users\\guysh\\OneDrive\\Desktop\\test'
+        self.files = []
+        self.files_type = ""
+        self.c_header = '#include"..\\appData\\overloadingAllocations_c.h"\n'
+        self.cpp_header = '#include"..\\appData\\overloadingAllocations_cpp.h"\n'
+        self.userData = '..\\userData\\'
+
+    def generate_system_error(self):
         pass
 
-    # def findTypes(self):
-    #     text_file = "./testClassName.cpp"
-    #     listClass = list()
-    #     with open(text_file, 'r') as read_text:
-    #         for line in read_text:
-    #             if 'class' in line:
-    #                 listClass.append(line)
-    #     wordClass = re.compile("^class (\w+)")
-    #     for i in listClass:
-    #         m=re.search(wordClass,i)
-    #         if m != None:
-    #             self.classTypes.append(m.group(1))
-    #     # print(self.classTypes)
-    #
-    #     # go throghy all files
-    #     # look for class keyword.
-    #     #if present take next word after whitespace.
-    #     # if word exicst all ready, skip
-    #     # save word as new type in this context.
-    #
-    #
-    # def findFunctions(self):
-    #     pattern = re.compile("([a-zA-Z_][a-zA-Z0-9_]*)([\n\r\s]+)([a-zA-Z_][a-zA-Z0-9_]*)::([a-zA-Z_][a-zA-Z0-9_]*)\((.*)\)([\n\r\s]+)")
-    #     file1 = open('../testClass.cpp', 'r')
-    #     for line in file1.readlines():
-    #         if re.search(pattern, line):
-    #             print(line)
-    #
-    #
-    # def addAllocation(self,aloc):
-    #     self.allocations
-    #
-    # def setFreed(self):
-    #     pass
+    def pre_process(self):
 
-    def pre_process(self, files):
-        include_pattern = re.compile("^#include\s*<\w+.*>\n")
+        # list files and validate them, if error generate system log and return to view
+        if self.get_files() != State.OK:
+            return self.generate_system_error()
 
-        leakify = "#include<leakify.h>\n"
-        summarize = "summarize()\n"
+        # pick correct header to attach based on files type
+        leakify_header = self.c_header if self.files_type == 'c' else self.cpp_header
+
+
+        summarize = "summerize();\n"
+        openFile = "openFile();\n"
 
         main_pattern = re.compile("\w+\s+main.*?\)")
         return_pattern = re.compile("return.*?;")
+        include_pattern = re.compile('#include\s*[<|"]\w+.*[>|"]')
 
-        for file in files:
-            main = True
-            if file == "main.c" or file == "main.cpp":
+        for file in self.files:
+            main = False
+            if file[1] == "main.c" or file[1] == "main.cpp":
                 main = True
 
-            data = open(file, 'r')
-            new_data = open("t_" + file, 'w')
+            data = open(file[0] + file[1], 'r')
 
             content = data.readlines()
             start_includes = False
 
-            for i in range(0, len(content)):
-                if re.search(include_pattern, content[i]):
+            if file[1].endswith('.h'):
+                new_data = open(self.userData + file[1], 'w')
+                new_data.writelines(content)
+                continue
+
+            new_data = open(self.userData + "t_" + file[1], 'w')
+
+            for index in range(0, len(content)):
+                if re.search(include_pattern, content[index]):
                     start_includes = True
-                elif start_includes and len(content[i]) > 1:
-                    content.insert(i, leakify)
+                elif start_includes and len(content[index]) > 1:
+                    content.insert(index, leakify_header)
                     break
 
             seen_main = False
             skopes = 0
 
             if main:
-                for i in range(0, len(content)):
-                    if re.search(main_pattern, content[i]):
+                while index < len(content):
+                    if re.search(main_pattern, content[index]):
                         seen_main = True
-                        continue
+                        if '{' in content[index]:
+                            content.insert(index+1, openFile)
+                        else:
+                            content.insert(index + 2, openFile)
                     if seen_main:
-                        if re.search(return_pattern, content[i]):
-                            content.insert(i, summarize)
-                            break
-                        if '{' in content[i]:
+                        if '{' in content[index]:
                             skopes += 1
-                        if '}' in content[i]:
+                        if '}' in content[index]:
                             if skopes == 1:
-                                content.insert(i, summarize)
+                                content.insert(index, summarize)
                                 break
                             skopes -= 1
+
+                        if re.search(return_pattern, content[index]):
+                            content.insert(index, summarize)
+                            break
+
+                    index+=1
 
             for line in content:
                 new_data.write(line)
@@ -103,6 +117,7 @@ class VirtualMemory:
             data.close()
             new_data.close()
 
+        return State.OK
 
     def compare(self):
         allocations = {}
@@ -110,30 +125,101 @@ class VirtualMemory:
 
         pattern = re.compile("\w+\[.*\]"
                              )
-        with open('./allocations.txt','r') as data:
+        with open( self.userData + 'allocations.txt', 'r') as data:
             for line in data:
                 if line[0] == '0':
-                    split = line.split('#')
-                    allocations[re.search(pattern,line).group(0)] = split[0][2:]
+                    tmp = Allocation(line)
+                    print(tmp)
+                    allocations[tmp.address] = tmp
                 else:
-                    releases.append(re.search(pattern,line).group(0))
+                    releases.append(re.search(pattern, line).group(0))
 
             for relase in releases:
                 if relase in allocations:
                     del allocations[relase]
 
-
         for item in allocations:
             print(item)
 
+    def get_files(self):
+        for root, dirs, files in os.walk(self.path_to_folder):
+            for file in files:
+                if file.endswith(".cpp") or file.endswith(".c") or file.endswith(".h"):
+                    self.files.append((root + '\\', file))
+
+        print(self.files)
+        return self.validate_files()
+
+    def validate_files(self):
+        c = False
+        cpp = False
+        main = False
+
+        for file in self.files:
+            if file[1].endswith('.c'):
+                c = True
+            if file[1].endswith('.cpp'):
+                cpp = True
+
+            if file[1].startswith('main.'):
+                if main:
+                    return State.MULTIPLE_MAINS
+                else:
+                    main = True
+
+            if c and cpp:
+                return State.MIXED_EXTENSIONS
+
+        self.files_type = 'c' if c else 'cpp'
+        return State.OK
+
+    def compile(self):
+
+        # compiler = "gcc" if self.files_type == 'c' else "g++"
+
+        compile_command = ["gcc" if self.files_type == 'c' else "g++"]
+
+        # for file in self.files:
+        #     compile_command.append('..\\userData\\t_' +file[1])
+
+        for file in os.listdir(self.userData):
+            if file.endswith(".cpp") or file.endswith(".c"):
+                compile_command.append(os.path.join(self.userData, file))
 
 
-# ([a-zA-Z_][a-zA-Z0-9_]*)([\n\r\s]+)([a-zA-Z_][a-zA-Z0-9_]*)::([a-zA-Z_][a-zA-Z0-9_]*)\((.*)\)([\n\r\s]+)
+        compile_command.append('-o')
+        compile_command.append(self.userData + 'main.exe')
+        print(compile_command)
 
-a = VirtualMemory()
-#a.findFunctions()
+        try:
+            process = subprocess.run(compile_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=True)
+            print(process.stdout)
+        except subprocess.CalledProcessError as suberror:
+            print(suberror.stdout.decode("utf-8"))
 
-a.findTypes()
+    def run_user_file(self):
+        try:
+            process = subprocess.run(self.userData + 'main.exe', stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=True)
+            print(process.stdout)
+        except subprocess.CalledProcessError as suberror:
+            print(suberror.stdout.decode("utf-8"))
+
+    def run_interactive_user_file(self):
+        try:
+            process = subprocess.run('start /wait ' + self.userData + './main.exe', stdout=subprocess.PIPE,stderr=subprocess.STDOUT, check=True, shell=True)
+            print(process.returncode)
+        except subprocess.CalledProcessError as suberror:
+            print(suberror.stdout.decode("utf-8"))
+
+
+
+
+
+
+# class Error:
+#     def __init__(self):
+#         self.message = message
+#         state = None
 
 
 
@@ -141,12 +227,15 @@ a.findTypes()
 
 
 
+a = preProcess()
+print(a.pre_process())
+a.compile()
+
+a.run_user_file()
+
+a.compare()
 
 
 
-
-
-
-
-
-
+# a.list_files()
+# print(a.validate_files())

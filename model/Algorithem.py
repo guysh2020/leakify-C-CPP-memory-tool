@@ -1,8 +1,9 @@
-from Model import Model
 
-# class algorithemInterface:
-#     def run(self):
-#         pass
+# from Model import model
+
+class algorithemInterface:
+    def run(self):
+        pass
 #
 #
 #
