@@ -3,19 +3,9 @@ import tkinter.font as tkFont
 from tkinter import Menu
 from tkinter import filedialog
 
-class App:
+class GUI:
     def __init__(self, root):
-        #setting title
-        root.title("Leakify")
-        #setting window size
-        width=800
-        height=500
-        screenwidth = root.winfo_screenwidth()
-        screenheight = root.winfo_screenheight()
-        alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
-        root.geometry(alignstr)
-        root.resizable(width=False, height=False)
-        #Exit action
+        #nabvar
         def _quit():
             root.quit()
             root.destroy()
@@ -23,46 +13,111 @@ class App:
         #Create Menu Bar
         menuBar=Menu(root)
         root.config(menu=menuBar)
-        #File Menu
-        fileMenu= Menu(menuBar, tearoff=0)
-        fileMenu.add_command(label="New")
-        fileMenu.add_separator()
-        fileMenu.add_command(label="Exit", command=_quit)
-        menuBar.add_cascade(label="File", menu=fileMenu)
         #Help Menu
         helpMenu= Menu(menuBar, tearoff=0)
         helpMenu.add_command(label="About")
         menuBar.add_cascade(label="Help", menu=helpMenu)
-        def openfile():
-            return filedialog.askopenfilename()
+        #setting title
+        root.title("Leakify")
+        #setting window size
+        width=1200
+        height=600
+        screenwidth = root.winfo_screenwidth()
+        screenheight = root.winfo_screenheight()
+        alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
+        root.geometry(alignstr)
+        root.resizable(width=False, height=False)
 
-        GButton_565=tk.Button(root)
-        GButton_565["bg"] = "#111212"
-        ft = tkFont.Font(family='Berlin Sans FB Demi',size=18)
-        GButton_565["font"] = ft
-        GButton_565["fg"] = "#f4f2f2"
-        GButton_565["justify"] = "center"
-        GButton_565["text"] = "Choose program"
-        GButton_565.place(x=270,y=210,width=276,height=202)
-        GButton_565["command"] = openfile
+        button_folder=tk.Button(root)
+        button_folder["bg"] = "#212F3C"
+        ft = tkFont.Font(family='Copperplate Gothic Light',size=23)
+        button_folder["font"] = ft
+        button_folder["fg"] = "#FDFEFE"
+        button_folder["justify"] = "center"
+        button_folder["text"] = "choose \n folder"
+        button_folder.place(x=70,y=200,width=200,height=100)
+        button_folder["command"] = self.button_folder_command
 
-        GLabel_800=tk.Label(root)
-        ft = tkFont.Font(family='Berlin Sans FB Demi',size=50)
-        GLabel_800["font"] = ft
-        GLabel_800["fg"] = "#333333"
-        GLabel_800["justify"] = "center"
-        GLabel_800["text"] = "Leakify"
-        GLabel_800.place(x=285,y=60,width=252,height=115)
 
-        GLabel_988=tk.Label(root)
-        ft = tkFont.Font(family='Berlin Sans FB Demi',size=14)
-        GLabel_988["font"] = ft
-        GLabel_988["fg"] = "#333333"
-        GLabel_988["justify"] = "center"
-        GLabel_988["text"] = "Please insert c/cpp file without compilations errors to start"
-        GLabel_988.place(x=110,y=440,width=600,height=30)
+        button_run=tk.Button(root)
+        button_run["bg"] = "#424d4c"
+        ft = tkFont.Font(family='Copperplate Gothic Light',size=23)
+        button_run["font"] = ft
+        button_run["fg"] = "#FDFEFE"
+        button_run["justify"] = "center"
+        button_run["text"] = "Run"
+        button_run.place(x=520,y=170,width=150,height=80)
+        button_run["command"] = self.button_run_command
+
+        button_save=tk.Button(root)
+        button_save["bg"] = "#645c5c"
+        ft = tkFont.Font(family='Copperplate Gothic Light',size=23)
+        button_save["font"] = ft
+        button_save["fg"] = "#FDFEFE"
+        button_save["justify"] = "center"
+        button_save["text"] = "Save"
+        button_save.place(x=520,y=290,width=150,height=80)
+        button_save["command"] = self.button_save_command
+
+        label_deatils=tk.Label(root)
+        ft = tkFont.Font(family='Copperplate Gothic Light',size=20)
+        label_deatils["font"] = ft
+        label_deatils["fg"] = "#333333"
+        label_deatils["justify"] = "left"
+        label_deatils["text"] = "Leakify will make your \n coding life easier!"
+        label_deatils.place(x=780,y=180,width=400,height=70)
+
+        text_deatils=tk.Label(root)
+        ft = tkFont.Font(family='Copperplate Gothic Light',size=13)
+        text_deatils["font"] = ft
+        text_deatils["fg"] = "#333333"
+        text_deatils["justify"] = "left"
+        text_deatils["text"] =  "Requirment for using: \n" \
+                                "1. Your program is written in c/c++ \n" \
+                                "2. Your program must have main file \n" \
+                                "3. Your progrem must compile \n" \
+                                "4. Gcc installed on your computer" \
+
+        text_deatils.place(x=790,y=250,width=400,height=100)
+
+        label_leakify=tk.Label(root)
+
+        ft = tkFont.Font(family='Copperplate Gothic Light',size=70)
+        label_leakify["font"] = ft
+        label_leakify["fg"] = "#333333"
+        label_leakify["justify"] = "center"
+        label_leakify["text"] = "Leakify"
+        label_leakify.place(x=440,y=10,width=355,height=110)
+
+        log_entry=tk.Entry(root)
+        log_entry["borderwidth"] = "1px"
+        ft = tkFont.Font(family='Copperplate Gothic Light',size=10)
+        log_entry["fg"] = "#17202A"
+        log_entry["justify"] = "left"
+        log_entry["text"] = "Your log"
+        log_entry.place(x=0,y=420,width=1200,height=228)
+
+        label_log=tk.Label(root)
+        ft = tkFont.Font(family='Copperplate Gothic Light',size=15)
+        label_log["font"] = ft
+        label_log["fg"] = "#333333"
+        label_log["justify"] = "center"
+        label_log["text"] = "Your log"
+        label_log.place(x=3,y=380,width=100,height=35)
+
+
+    def button_folder_command(self):
+        filedialog.askopenfilename()
+
+
+    def button_run_command(self):
+        print("command")
+
+
+    def button_save_command(self):
+        print("command")
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = App(root)
+    app = GUI(root)
     root.mainloop()
