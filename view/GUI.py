@@ -3,6 +3,7 @@ import tkinter.font as tkFont
 from tkinter import Menu
 from tkinter import filedialog
 
+
 class GUI:
     def __init__(self, root):
         #nabvar
