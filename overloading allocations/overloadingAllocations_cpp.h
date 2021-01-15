@@ -39,6 +39,14 @@ inline void* operator new(size_t sz,const char *file, int line, const char *func
     return ptr;
 }
 
+inline void* operator new(size_t sz)
+{
+    //std::cout << "here!";
+    void *ptr = std::malloc(sz);
+    fprintf(fp,"0 Allocated = #%p[%zu]\n",ptr,sz);
+    return ptr;
+}
+
 inline void* operator new[](std::size_t sz,const char* file, unsigned int line,const char *func) 
 {
     void *ptr = std::malloc(sz);

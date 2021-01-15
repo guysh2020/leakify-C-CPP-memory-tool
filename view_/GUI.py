@@ -2,15 +2,16 @@ import tkinter as tk
 import tkinter.font as tkFont
 from tkinter import Menu
 from tkinter import filedialog
+from view import *
 
-
-class GUI:
+class GUI():
     def __init__(self, root):
         #nabvar
         def _quit():
             root.quit()
             root.destroy()
             exit()
+    def view(self):
         #Create Menu Bar
         menuBar=Menu(root)
         root.config(menu=menuBar)
