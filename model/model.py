@@ -9,13 +9,11 @@ class Model:
         self.log = []
 
     def set_path(self, path):
-        print(os.getcwd())
         self.algorithm.set_path(path)
 
     def find_errors(self):
-        return self.algorithm.run()
-        # self.lost_allocations = self.algorithm.run()
-        # return self.generate_log()
+        self.lost_allocations = self.algorithm.run()
+        return self.generate_log()
 
     def set_interactive(self, interactive):
         self.algorithm.set_interactive(interactive)
@@ -30,6 +28,6 @@ class Model:
 
     def generate_log(self):
         for aloc in self.lost_allocations:
-            self.log.append(aloc)
-            # self.log.append(f'in module: {aloc.module}, in function: {aloc.function}, in line: {aloc.line}, {aloc.size} Bytes were allocated but never freed')
+            # self.log.append(self.lost_allocations[aloc])
+            self.log.append(f'in module: {self.lost_allocations[aloc].module}, in function: {self.lost_allocations[aloc].function}, in line: {self.lost_allocations[aloc].line}, {self.lost_allocations[aloc].size} Bytes were allocated but never freed\n')
         return self.log

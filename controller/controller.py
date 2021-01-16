@@ -18,13 +18,10 @@ class Controller():
         self.model.set_path(path)
 
     def find_errors(self):
-        print(self.model.find_errors())
+        return self.model.find_errors()
 
     def save_log(self, path):
         self.model.save_log(path)
-
-    def mock(self):
-        return ['a','b','c']
 
     def set_view_(self, view):
         self.view = view
