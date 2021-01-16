@@ -1,20 +1,38 @@
 import tkinter as tk
 
-# from model.model import model
+from model.model import Model
 # from view_.view import view
 from view_.GUI import GUI
 
-class controller():
+class Controller():
     def __init__(self):
-        # self.model = model()
-        root = tk.Tk()
-        self.view = GUI(root)
-        root.mainloop()
+        self.view = GUI(self)
+        self.model = Model()
 
-if __name__ == "__main__":
-    # Create an instance of Tk. This is popularly called 'root' But let's
-    # call it mainwin (the 'main window' of the application. )
-    _controller = controller()
+
+    def run(self):
+        self.view.create()
+        self.view.root.mainloop()
+        # self.root.mainloop()
+
+    def set_path(self, path):
+        self.model.set_path(path)
+
+    def find_errors(self):
+        self.model.find_errors()
+
+    def save_log(self, path):
+        self.model.save_log(path)
+
+    def set_view_(self,view):
+        self.GUI = view
+
+    def set_interactive(self):
+        self.model.set_interactive(True)
+
+
+
+
 
 
 

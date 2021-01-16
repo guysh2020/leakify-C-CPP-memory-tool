@@ -1,7 +1,7 @@
 
 # from Model import model
 
-from allocation import Allocation
+from model.allocation import Allocation
 
 
 class AlgorithmInterface:
