@@ -11,21 +11,29 @@ from algorithm import AlgorithmInterface
 
 class AllocationsOverloading(AlgorithmInterface):
     def __init__(self):
-        self.path_to_folder = 'C:\\Users\\guysh\\OneDrive\\Desktop\\test'
-        # self.path_to_folder = path
+        self.path_to_folder = ''
+        # self.path_to_folder = 'C:\\Users\\guysh\\OneDrive\\Desktop\\test'
+        self.interactive = False        # set by user
         self.files = []
         self.files_type = ""
 
         self.C_HEADER = '#include"..\\appData\\overloadingAllocations_c.h"\n'
         self.CPP_HEADER = '#include"..\\appData\\overloadingAllocations_cpp.h"\n'
         self.NEW_DATA_LOCATION = '..\\userData\\'
+        self.C_SOURCE = '..\\appData\\overloadingAllocations_c.c'
+        self.CPP_SOURCE = '..\\appData\\overloadingAllocations_cpp.cpp'
 
     def run(self):
-        if self.pre_process() == State.OK:
-            print('preeprocess done')
-        else:
-            print('error at preprocess')
-
+        self.pre_process()
+        self.compile()
+        self.run_interactive_user_file()
+        self.find_leaks()
+        
+    def set_path(self, path):
+        self.path_to_folder = path
+        
+    def set_interactive(self, interactive):
+        self.interactive = interactive
 
     def pre_process(self):
 
@@ -80,46 +88,17 @@ class AllocationsOverloading(AlgorithmInterface):
 
         return State.OK
 
-    # def find_leaks(self):
-    #     allocations = {}
-    #     releases = []
-    #
-    #     pattern = re.compile("\w+\[.*\]")
-    #     with open(self.NEW_DATA_LOCATION + 'allocations.txt', 'r') as data:
-    #         for line in data:
-    #             if line.startswith('0') =:
-    #                 tmp = Allocation(line)
-    #                 print(tmp)
-    #                 allocations[tmp.address] = tmp
-    #             else:
-    #                 releases.append(re.search(pattern, line).group(0))
-    #
-    #         for relase in releases:
-    #             if relase in allocations:
-    #                 del allocations[relase]
-    #
-    #     for item in allocations:
-    #         print(item)
-
-
-
-    # def test(self):
-    #     shutil.copytree(
-    #         src='C:\\Users\\guysh\\OneDrive\\Desktop\\test',
-    #         dst='C:\\Users\\guysh\\OneDrive\\Documents\\coding\\leakify\\leakify-CPP-memory-tool\\userData\\user')
-
     def find_leaks(self):
         allocations = {}
         releases = []
 
-        pattern = re.compile("\w+\[.*\]")
         with open(self.NEW_DATA_LOCATION + 'allocations.txt', 'r') as data:
             for entry in data:
                 if entry.startswith('0'):
                     tmp = Allocation(entry)
                     allocations[tmp.address] = tmp
                 else:
-                    releases.append(entry.split('=')[1].split(',')[3].split('[')[0])
+                    releases.append(entry.split('=')[1].split('[')[0])
 
             for release in releases:
                 if release in allocations:
@@ -132,12 +111,9 @@ class AllocationsOverloading(AlgorithmInterface):
         for root, dirs, files in os.walk(self.path_to_folder):
             for file in files:
                 if file.endswith(".cpp") or file.endswith(".c") or file.endswith(".h"):
-                    # self.files.append((root + '\\', file))
                     self.files.append({'path': root + '\\', 'name': file})
 
-        print(self.files)
         return self.validate_files()
-
 
     def validate_files(self):
         c = False
@@ -160,10 +136,15 @@ class AllocationsOverloading(AlgorithmInterface):
                 return State.MIXED_EXTENSIONS
 
         self.files_type = 'c' if c else 'cpp'
+
+        if not main:
+            return State.MAIN_MISSING
+
         return State.OK
 
     def compile(self):
         compile_command = ["gcc" if self.files_type == 'c' else "g++"]
+        compile_command.append(self.C_SOURCE if self.files_type == 'c' else self.CPP_SOURCE)
 
         for file in os.listdir(self.NEW_DATA_LOCATION):
             if file.endswith(".cpp") or file.endswith(".c"):
@@ -190,7 +171,8 @@ class AllocationsOverloading(AlgorithmInterface):
 
     def run_interactive_user_file(self):
         try:
-            process = subprocess.run('start /wait ' + self.NEW_DATA_LOCATION + './main.exe', stdout=subprocess.PIPE,stderr=subprocess.STDOUT, check=True, shell=True)
+            process = subprocess.run('start /wait ' + self.NEW_DATA_LOCATION + './main.exe', stdout=subprocess.PIPE,
+                                     stderr=subprocess.STDOUT, check=True, shell=True)
             print(process.returncode)
         except subprocess.CalledProcessError as suberror:
             print(suberror.stdout.decode("utf-8"))
@@ -202,6 +184,9 @@ class AllocationsOverloading(AlgorithmInterface):
             os.remove(os.path.join(self.NEW_DATA_LOCATION, file))
 
 
+# a = AllocationsOverloading()
+# # a.clean_folder()
+# a.run()
 
-a = AllocationsOverloading()
-a.clean_folder()
+
+

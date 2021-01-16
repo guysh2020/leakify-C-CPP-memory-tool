@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define FILE_NAME "allocations.txt"
+#define FILE_NAME "..\\userData\\allocations.txt"
 
 FILE* openFile()
 {
