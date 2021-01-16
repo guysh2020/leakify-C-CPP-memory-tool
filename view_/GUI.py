@@ -6,6 +6,9 @@ from tkinter import Menu, END
 from tkinter import filedialog
 from tkinter import filedialog
 import tkinter.messagebox as box
+import time, threading
+
+
 # from controller.controller import Controller
 
 
@@ -77,11 +80,7 @@ class GUI:
                                "4. Gcc installed on your computer"
         text_deatils.place(x=410, y=250, width=400, height=100)
 
-
-        c_interactive=tk.Checkbutton(self.root)
-
-
-
+        c_interactive = tk.Checkbutton(self.root)
 
         # ft = tkFont.Font(family='Times',size=10)
         # c_interactive["font"] = ft
@@ -115,20 +114,6 @@ class GUI:
         button_run["text"] = "Run"
         button_run.place(x=930, y=200, width=200, height=100)
 
-        # button_run["command"] = self.button_run_command
-        # button_save=tk.Button(self.root)
-        # button_save["bg"] = "#645c5c"
-        # ft = tkFont.Font(family='Copperplate Gothic Light',size=23)
-        # button_save["font"] = ft
-        # button_save["fg"] = "#FDFEFE"
-        # button_save["justify"] = "center"
-        # button_save["text"] = "Save"
-        # button_save.place(x=520,y=290,width=150,height=80)
-        # button_save["command"] = self.button_save_command
-
-
-
-
     def button_folder_command(self):
         folder_path = tk.StringVar()
         filename = filedialog.askdirectory()
@@ -144,27 +129,48 @@ class GUI:
         label_log["fg"] = "#333333"
         label_log["justify"] = "center"
         label_log["text"] = f"Files in directory: {filename}"
-        label_log.place(x=0, y=380, width=550, height=35)
+        label_log.place(x=0, y=380, width=1000, height=35)
 
         Lb1 = tk.Listbox(self.root)
-        Lb1.place(x=0, y=420, width=1200, height=228)
+        Lb1.place(x=0, y=420, width=800, height=228)
 
         for file in listFiles:
             Lb1.insert(1, file)
 
     def button_run_command(self):
-        self.controller.mock()
+        label_log = tk.Label(self.root)
+        ft = tkFont.Font(family='Copperplate Gothic Light', size=15)
+        label_log["font"] = ft
+        label_log["fg"] = "#333333"
+        label_log["justify"] = "center"
+        label_log["text"] = "In Procces"
+        label_log.place(x=0, y=380, width=200, height=35)
+
+        Lb1 = tk.Listbox(self.root)
+        Lb1.place(x=0, y=420, width=600, height=228)
+
+        errors = self.controller.find_errors()
+        for i in errors or []:
+            Lb1.insert(1, i)
+
+        button_save = tk.Button(self.root)
+        button_save["bg"] = "#645c5c"
+        ft = tkFont.Font(family='Copperplate Gothic Light', size=23)
+        button_save["font"] = ft
+        button_save["fg"] = "#FDFEFE"
+        button_save["justify"] = "center"
+        button_save["text"] = "Save"
+        button_save.place(x=900, y=420, width=150, height=80)
+        button_save["command"] = self.button_save_command
+
 
 
     def button_save_command(self):
-        file = filedialog.asksaveasfile(defaultextension='.txt',
-                                        filetypes=[
-                                            ("Text file", ".txt"),
-                                            ("Cpp file", ".cpp"),
-                                            ("C file", ".c"),
-                                        ])
-        # fileText = str(text.get(1.0,END))
-        fileText = input("enter some text")
-        file.write(fileText)
-        file.close()
+        folder_path = tk.StringVar()
+        filename = filedialog.askdirectory()
+        folder_path.set(filename)
+
+
+        self.controller.save_log(filename)
+
 

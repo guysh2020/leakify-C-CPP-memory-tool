@@ -1,4 +1,4 @@
-from allocations_overloading import AllocationsOverloading
+from model.allocations_overloading import AllocationsOverloading
 import os
 
 class Model:

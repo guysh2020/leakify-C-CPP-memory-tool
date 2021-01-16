@@ -3,10 +3,10 @@ import re
 import subprocess
 import shutil
 
-from state import State
-from allocation import Allocation
+from model.state import State
+from model.allocation import Allocation
 # from .release import Release
-from algorithm import AlgorithmInterface
+from model.algorithm import AlgorithmInterface
 
 
 class AllocationsOverloading(AlgorithmInterface):
