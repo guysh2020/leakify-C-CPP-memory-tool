@@ -13,25 +13,26 @@ class AllocationsOverloading(AlgorithmInterface):
     def __init__(self):
         self.path_to_folder = ''
         # self.path_to_folder = 'C:\\Users\\guysh\\OneDrive\\Desktop\\test'
-        self.interactive = False        # set by user
+        self.interactive = False  # set by user
         self.files = []
         self.files_type = ""
 
         self.C_HEADER = '#include"..\\appData\\overloadingAllocations_c.h"\n'
         self.CPP_HEADER = '#include"..\\appData\\overloadingAllocations_cpp.h"\n'
-        self.NEW_DATA_LOCATION = '..\\userData\\'
-        self.C_SOURCE = '..\\appData\\overloadingAllocations_c.c'
-        self.CPP_SOURCE = '..\\appData\\overloadingAllocations_cpp.cpp'
+        self.NEW_DATA_LOCATION = '.\\userData\\'
+        self.C_SOURCE = '.\\appData\\overloadingAllocations_c.c'
+        self.CPP_SOURCE = '.\\appData\\overloadingAllocations_cpp.cpp'
 
     def run(self):
         self.pre_process()
         self.compile()
-        self.run_interactive_user_file()
-        self.find_leaks()
-        
+        self.run_user_file()
+        return self.find_leaks()
+
+
     def set_path(self, path):
         self.path_to_folder = path
-        
+
     def set_interactive(self, interactive):
         self.interactive = interactive
 
@@ -92,6 +93,7 @@ class AllocationsOverloading(AlgorithmInterface):
         allocations = {}
         releases = []
 
+        print(os.getcwd())
         with open(self.NEW_DATA_LOCATION + 'allocations.txt', 'r') as data:
             for entry in data:
                 if entry.startswith('0'):
@@ -104,8 +106,7 @@ class AllocationsOverloading(AlgorithmInterface):
                 if release in allocations:
                     del allocations[release]
 
-        for item in allocations:
-            print(item)
+        return allocations
 
     def get_files(self):
         for root, dirs, files in os.walk(self.path_to_folder):
@@ -182,11 +183,3 @@ class AllocationsOverloading(AlgorithmInterface):
             if file == '.gitignore':
                 continue
             os.remove(os.path.join(self.NEW_DATA_LOCATION, file))
-
-
-# a = AllocationsOverloading()
-# # a.clean_folder()
-# a.run()
-
-
-

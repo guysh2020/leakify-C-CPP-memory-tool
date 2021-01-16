@@ -6,11 +6,10 @@ from tkinter import Menu, END
 from tkinter import filedialog
 from tkinter import filedialog
 import tkinter.messagebox as box
+# from controller.controller import Controller
 
-from view import *
 
-
-class GUI():
+class GUI:
     def __init__(self, controller):
         self.controller = controller
         self.root = tk.Tk()
@@ -48,7 +47,7 @@ class GUI():
         label_leakify["text"] = "Leakify"
         label_leakify.place(x=440, y=10, width=355, height=110)
 
-        button_folder = tk.Button(self.root, command=lambda: self.button_folder_command)
+        button_folder = tk.Button(self.root, command=self.button_folder_command)
         button_folder["bg"] = "#212F3C"
         ft = tkFont.Font(family='Copperplate Gothic Light', size=23)
         button_folder["font"] = ft
@@ -78,7 +77,36 @@ class GUI():
                                "4. Gcc installed on your computer"
         text_deatils.place(x=410, y=250, width=400, height=100)
 
+
+        c_interactive=tk.Checkbutton(self.root)
+
+
+
+
+        # ft = tkFont.Font(family='Times',size=10)
+        # c_interactive["font"] = ft
+        # c_interactive["fg"] = "#333333"
+        # c_interactive["justify"] = "center"
+        # c_interactive["text"] = "CheckBox"
+        # c_interactive.place(x=930,y=120,width=70,height=25)
+        # c_interactive["offvalue"] = "0"
+        # c_interactive["onvalue"] = "1"
+        # c_interactive.pack()
+        # lbl = tk.Label(self.root)
+        # lbl.pack()
+        #
+        # var = tk.BooleanVar()
+
+        # def update_lbl():
+        #     global var
+        #     if var.get():
+        #         lbl['text'] = str(var.get())
+        #     else:
+        #         print(var.get())
+
+        # tk.Checkbutton(self.root, variable=var, command=update_lbl).pack()
         button_run = tk.Button(self.root, command=self.button_run_command)
+
         button_run["bg"] = "#424d4c"
         ft = tkFont.Font(family='Copperplate Gothic Light', size=23)
         button_run["font"] = ft
@@ -98,22 +126,8 @@ class GUI():
         # button_save.place(x=520,y=290,width=150,height=80)
         # button_save["command"] = self.button_save_command
 
-        log_entry = tk.Entry(self.root)
-        log_entry["borderwidth"] = "1px"
-        ft = tkFont.Font(family='Copperplate Gothic Light', size=10)
-        log_entry["fg"] = "#17202A"
-        log_entry["justify"] = "left"
-        log_entry["text"] = "Your log"
 
-        # log_entry.place(x=0,y=420,width=1200,height=228)
-        # log_entry["command"] = self.log_command
-        # label_log=tk.Label(self.root)
-        # ft = tkFont.Font(family='Copperplate Gothic Light',size=15)
-        # label_log["font"] = ft
-        # label_log["fg"] = "#333333"
-        # label_log["justify"] = "center"
-        # label_log["text"] = "Your log"
-        # label_log.place(x=3,y=380,width=100,height=35)
+
 
     def button_folder_command(self):
         folder_path = tk.StringVar()
@@ -121,7 +135,6 @@ class GUI():
         folder_path.set(filename)
         print("path:" + filename)
         listFiles = os.listdir(filename)  # list of files
-        print(listFiles)
 
         self.controller.set_path(filename)
 
@@ -140,10 +153,8 @@ class GUI():
             Lb1.insert(1, file)
 
     def button_run_command(self):
-        print("command")
+        self.controller.mock()
 
-    def log_command(self):
-        pass
 
     def button_save_command(self):
         file = filedialog.asksaveasfile(defaultextension='.txt',
