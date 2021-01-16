@@ -1,15 +1,16 @@
 import os
 import re
 import subprocess
+import shutil
 
-from model.state import State
-from model.allocation import Allocation
-from .release import Release
-from model.algorithm import AlgorithmInterface
+from state import State
+from allocation import Allocation
+# from .release import Release
+from algorithm import AlgorithmInterface
 
 
 class AllocationsOverloading(AlgorithmInterface):
-    def __init__(self, path):
+    def __init__(self):
         self.path_to_folder = 'C:\\Users\\guysh\\OneDrive\\Desktop\\test'
         # self.path_to_folder = path
         self.files = []
@@ -101,6 +102,12 @@ class AllocationsOverloading(AlgorithmInterface):
     #         print(item)
 
 
+
+    # def test(self):
+    #     shutil.copytree(
+    #         src='C:\\Users\\guysh\\OneDrive\\Desktop\\test',
+    #         dst='C:\\Users\\guysh\\OneDrive\\Documents\\coding\\leakify\\leakify-CPP-memory-tool\\userData\\user')
+
     def find_leaks(self):
         allocations = {}
         releases = []
@@ -130,6 +137,7 @@ class AllocationsOverloading(AlgorithmInterface):
 
         print(self.files)
         return self.validate_files()
+
 
     def validate_files(self):
         c = False
@@ -189,9 +197,11 @@ class AllocationsOverloading(AlgorithmInterface):
 
     def clean_folder(self):
         for file in os.listdir(self.NEW_DATA_LOCATION):
+            if file == '.gitignore':
+                continue
             os.remove(os.path.join(self.NEW_DATA_LOCATION, file))
 
 
 
 a = AllocationsOverloading()
-a.run()
+a.clean_folder()
