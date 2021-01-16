@@ -78,23 +78,10 @@ class GUI:
         text_deatils.place(x=410, y=250, width=400, height=100)
 
 
-        # c_interactive=tk.Checkbutton(self.root)
+        c_interactive=tk.Checkbutton(self.root)
 
 
-        # var = tk.IntVar()
-        # chk = tk.Checkbutton(self.root, text='foo', variable=var)
-        #
-        # ft = tkFont.Font(family='Times',size=10)
-        # chk["font"] = ft
-        # chk["fg"] = "#333333"
-        # chk["justify"] = "center"
-        # chk["text"] = "CheckBox"
-        # chk.place(x=930,y=120,width=70,height=25)
-        # chk["offvalue"] = "0"
-        # chk["onvalue"] = "1"
-        # chk.pack()
 
-        # chk.get()
 
         # ft = tkFont.Font(family='Times',size=10)
         # c_interactive["font"] = ft
@@ -166,7 +153,7 @@ class GUI:
             Lb1.insert(1, file)
 
     def button_run_command(self):
-        print(self.controller.find_errors())
+        self.controller.mock()
 
 
     def button_save_command(self):

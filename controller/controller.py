@@ -1,8 +1,10 @@
 import tkinter as tk
 
 from model.model import Model
-# from view_.view import view
+
 from view_.GUI import GUI
+
+
 
 class Controller():
     def __init__(self):
@@ -19,6 +21,7 @@ class Controller():
         self.model.set_path(path)
 
     def find_errors(self):
+
         self.model.find_errors()
 
     def save_log(self, path):
@@ -33,7 +36,14 @@ class Controller():
 
 
 
+    def save_log(self, path):
+        self.model.save_log(path)
 
+    def mock(self):
+        return ['a','b','c']
 
+    def set_view_(self, view):
+        self.view = view
 
-
+    def set_interactive(self):
+        self.model.set_interactive(True)

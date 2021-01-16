@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <stdint.h>
 
-#define FILE_NAME "allocations.txt"
+#define FILE_NAME ".\\userData\\allocations.txt"
 
 FILE* openFile()
 {

@@ -3,10 +3,10 @@ import re
 import subprocess
 import shutil
 
-from model.state import State
-from model.allocation import Allocation
+from state import State
+from allocation import Allocation
 # from .release import Release
-from model.algorithm import AlgorithmInterface
+from algorithm import AlgorithmInterface
 
 
 class AllocationsOverloading(AlgorithmInterface):
@@ -26,8 +26,9 @@ class AllocationsOverloading(AlgorithmInterface):
     def run(self):
         self.pre_process()
         self.compile()
-        self.run_interactive_user_file()
-        self.find_leaks()
+        self.run_user_file()
+        return self.find_leaks()
+
 
     def set_path(self, path):
         self.path_to_folder = path
@@ -92,6 +93,7 @@ class AllocationsOverloading(AlgorithmInterface):
         allocations = {}
         releases = []
 
+        print(os.getcwd())
         with open(self.NEW_DATA_LOCATION + 'allocations.txt', 'r') as data:
             for entry in data:
                 if entry.startswith('0'):
@@ -104,8 +106,7 @@ class AllocationsOverloading(AlgorithmInterface):
                 if release in allocations:
                     del allocations[release]
 
-        for item in allocations:
-            print(item)
+        return allocations
 
     def get_files(self):
         for root, dirs, files in os.walk(self.path_to_folder):
