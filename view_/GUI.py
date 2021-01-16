@@ -1,7 +1,12 @@
+import os
 import tkinter as tk
 import tkinter.font as tkFont
-from tkinter import Menu
+from doctest import master
+from tkinter import Menu, END
 from tkinter import filedialog
+from tkinter import filedialog
+import tkinter.messagebox as box
+
 from view import *
 
 class GUI():
@@ -29,6 +34,15 @@ class GUI():
         root.geometry(alignstr)
         root.resizable(width=False, height=False)
 
+
+        label_leakify=tk.Label(root)
+        ft = tkFont.Font(family='Copperplate Gothic Light',size=70)
+        label_leakify["font"] = ft
+        label_leakify["fg"] = "#333333"
+        label_leakify["justify"] = "center"
+        label_leakify["text"] = "Leakify"
+        label_leakify.place(x=440,y=10,width=355,height=110)
+
         button_folder=tk.Button(root)
         button_folder["bg"] = "#212F3C"
         ft = tkFont.Font(family='Copperplate Gothic Light',size=23)
@@ -40,6 +54,26 @@ class GUI():
         button_folder["command"] = self.button_folder_command
 
 
+        label_deatils=tk.Label(root)
+        ft = tkFont.Font(family='Copperplate Gothic Light',size=20)
+        label_deatils["font"] = ft
+        label_deatils["fg"] = "#333333"
+        label_deatils["justify"] = "left"
+        label_deatils["text"] = "Leakify will make your \n coding life easier!"
+        label_deatils.place(x=410,y=180,width=400,height=70)
+
+        text_deatils=tk.Label(root)
+        ft = tkFont.Font(family='Copperplate Gothic Light',size=13)
+        text_deatils["font"] = ft
+        text_deatils["fg"] = "#333333"
+        text_deatils["justify"] = "left"
+        text_deatils["text"] =  "Requirment for using: \n" \
+                                "1. Your program is written in c/c++ \n" \
+                                "2. Your program must have main file \n" \
+                                "3. Your progrem must compile \n" \
+                                "4. Gcc installed on your computer"
+        text_deatils.place(x=410,y=250,width=400,height=100)
+
         button_run=tk.Button(root)
         button_run["bg"] = "#424d4c"
         ft = tkFont.Font(family='Copperplate Gothic Light',size=23)
@@ -47,7 +81,7 @@ class GUI():
         button_run["fg"] = "#FDFEFE"
         button_run["justify"] = "center"
         button_run["text"] = "Run"
-        button_run.place(x=520,y=170,width=150,height=80)
+        button_run.place(x=930,y=200,width=200,height=100)
         button_run["command"] = self.button_run_command
 
         button_save=tk.Button(root)
@@ -60,36 +94,6 @@ class GUI():
         button_save.place(x=520,y=290,width=150,height=80)
         button_save["command"] = self.button_save_command
 
-        label_deatils=tk.Label(root)
-        ft = tkFont.Font(family='Copperplate Gothic Light',size=20)
-        label_deatils["font"] = ft
-        label_deatils["fg"] = "#333333"
-        label_deatils["justify"] = "left"
-        label_deatils["text"] = "Leakify will make your \n coding life easier!"
-        label_deatils.place(x=780,y=180,width=400,height=70)
-
-        text_deatils=tk.Label(root)
-        ft = tkFont.Font(family='Copperplate Gothic Light',size=13)
-        text_deatils["font"] = ft
-        text_deatils["fg"] = "#333333"
-        text_deatils["justify"] = "left"
-        text_deatils["text"] =  "Requirment for using: \n" \
-                                "1. Your program is written in c/c++ \n" \
-                                "2. Your program must have main file \n" \
-                                "3. Your progrem must compile \n" \
-                                "4. Gcc installed on your computer" \
-
-        text_deatils.place(x=790,y=250,width=400,height=100)
-
-        label_leakify=tk.Label(root)
-
-        ft = tkFont.Font(family='Copperplate Gothic Light',size=70)
-        label_leakify["font"] = ft
-        label_leakify["fg"] = "#333333"
-        label_leakify["justify"] = "center"
-        label_leakify["text"] = "Leakify"
-        label_leakify.place(x=440,y=10,width=355,height=110)
-
         log_entry=tk.Entry(root)
         log_entry["borderwidth"] = "1px"
         ft = tkFont.Font(family='Copperplate Gothic Light',size=10)
@@ -97,6 +101,7 @@ class GUI():
         log_entry["justify"] = "left"
         log_entry["text"] = "Your log"
         log_entry.place(x=0,y=420,width=1200,height=228)
+        # log_entry["command"] = self.log_command
 
         label_log=tk.Label(root)
         ft = tkFont.Font(family='Copperplate Gothic Light',size=15)
@@ -106,19 +111,38 @@ class GUI():
         label_log["text"] = "Your log"
         label_log.place(x=3,y=380,width=100,height=35)
 
-
     def button_folder_command(self):
-        filedialog.askopenfilename()
+        folder_path = tk.StringVar()
+        filename = filedialog.askdirectory()
+        folder_path.set(filename)
+        print("path:" + filename)
+
+        listFiles = os.listdir(filename) #list of files
+        print(listFiles)
 
 
     def button_run_command(self):
         print("command")
 
 
-    def button_save_command(self):
-        print("command")
+    def log_command(self):
+        pass
 
-# if __name__ == "__main__":
+
+    def button_save_command(self):
+        file = filedialog.asksaveasfile(defaultextension='.txt',
+                                        filetypes=[
+                                            ("Text file",".txt"),
+                                            ("Cpp file",".cpp"),
+                                            ("C file",".c"),
+                                        ])
+        #fileText = str(text.get(1.0,END))
+        fileText = input("enter some text")
+        file.write(fileText)
+        file.close()
+
+
+    # if __name__ == "__main__":
 #     root = tk.Tk()
 #     app = GUI(root)
 #     root.mainloop()
