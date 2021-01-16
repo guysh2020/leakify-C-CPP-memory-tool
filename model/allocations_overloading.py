@@ -26,7 +26,7 @@ class AllocationsOverloading(AlgorithmInterface):
     def run(self):
         self.pre_process()
         self.compile()
-        self.run_user_file()
+        self.run_interactive_user_file()
         return self.find_leaks()
 
 
