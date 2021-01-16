@@ -1,4 +1,3 @@
-#pragma once
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -11,13 +10,9 @@ FILE* openFile()
     return fp;
 }
 
-void startRunning()
-{   
-    FILE *fp = openFile(); 
-    fprintf(fp,"***new running***\n");
-}
 void* my_malloc(size_t size, const char *file, int line, const char *func)
 {
+    printf("%s","here");
     FILE *fp = openFile();
     void *p = malloc(size);
     fprintf (fp,"0 Allocated = %s, %i, %s, #%p[%li]\n", file, line, func, p, size);
@@ -25,6 +20,7 @@ void* my_malloc(size_t size, const char *file, int line, const char *func)
 
     return p;
 }
+
 
 void *my_calloc(size_t count, size_t size, const char *file, int line, const char *func)
 {
@@ -44,5 +40,4 @@ void my_free(void *ptr, const char *file, int line, const char *func)
 
     free(ptr);
 }
-
 
