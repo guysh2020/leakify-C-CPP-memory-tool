@@ -45,8 +45,4 @@ void my_free(void *ptr, const char *file, int line, const char *func)
     free(ptr);
 }
 
-#define malloc(X) my_malloc(X, __FILE__, __LINE__, __FUNCTION__)
-#define calloc(X, Y) my_calloc(X, Y, __FILE__, __LINE__, __FUNCTION__)
-#define free(X) my_free(X, __FILE__, __LINE__, __FUNCTION__)
-
 
