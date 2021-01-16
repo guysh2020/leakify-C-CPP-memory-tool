@@ -7,12 +7,15 @@ from view_.GUI import GUI
 class controller():
     def __init__(self):
         # self.model = model()
-        self.view = GUI(root=0)
+        root = tk.Tk()
+        self.view = GUI(root)
+        root.mainloop()
 
 if __name__ == "__main__":
     # Create an instance of Tk. This is popularly called 'root' But let's
     # call it mainwin (the 'main window' of the application. )
     _controller = controller()
-    GUI.view(_controller)
+
+
 
 

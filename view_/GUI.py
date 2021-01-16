@@ -11,7 +11,6 @@ class GUI():
             root.quit()
             root.destroy()
             exit()
-    def view(self):
         #Create Menu Bar
         menuBar=Menu(root)
         root.config(menu=menuBar)
@@ -119,7 +118,7 @@ class GUI():
     def button_save_command(self):
         print("command")
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = GUI(root)
-    root.mainloop()
+# if __name__ == "__main__":
+#     root = tk.Tk()
+#     app = GUI(root)
+#     root.mainloop()

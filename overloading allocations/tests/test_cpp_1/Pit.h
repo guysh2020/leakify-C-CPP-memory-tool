@@ -1,9 +1,7 @@
 #pragma once
 #include "Hazard.h"
 #include <iostream>
-//
-#include "overloadingAllocations.h"
-//
+#include "overloadingAllocations_cpp.h"
 using namespace std;
 class Pit:public Hazard
 {

@@ -2,19 +2,16 @@
 #include <stdlib.h>
 
 //
-#include "overloadingAllocations_c.h"
+#include "overloadingAllocations_c.c"
 //
 
 #include <stdio.h>
 #include <time.h>
 
 
-/*
- TEST: SIMPLE TEST
- */
 
 int main(int argc, char **argv){
-    openFile();
+	startRunning();
 	printf("Tests the common errors that malloc could run into.. Such as:\n");
 	printf("\nAsking for more memory than available in the virtual memory:\n");
 	char *p = (char *) malloc(6000);
@@ -51,5 +48,6 @@ int main(int argc, char **argv){
 	for (i = 0; i < 50; i++){
 		p = malloc(100);
 	}
-    summerize();
+
+	free(p);
 }

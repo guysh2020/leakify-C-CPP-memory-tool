@@ -6,9 +6,10 @@
 #include "Cave.h"
 #include "SealedRoom.h"
 
-//
-#include "overloadingAllocations.h"
-//
+
+#include "overloadingAllocations_cpp.h"
+
+
 static std::string expectedResults[] =
 {
 	"Bat is nearPit is nearMushMush is nearYou got MushMush1"
@@ -67,7 +68,7 @@ static bool test(void)
 }
 int main()
 {
-	openFile();
+	startRunning();
 	if (test())
 		std::cout << "Error: Game Logic Error\n";
 	Room* r = new SealedRoom(1, 2, 3);

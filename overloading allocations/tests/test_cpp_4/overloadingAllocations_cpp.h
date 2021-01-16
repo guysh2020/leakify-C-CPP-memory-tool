@@ -26,8 +26,6 @@ void operator delete[](void *ptr, std::size_t sz);
 
 void operator delete[](void *ptr);
 
-void summerize();
-
 
 #define malloc(X) my_malloc(X, __FILE__, __LINE__, __FUNCTION__)
 #define calloc(X, Y) my_calloc(X, Y, __FILE__, __LINE__, __FUNCTION__)

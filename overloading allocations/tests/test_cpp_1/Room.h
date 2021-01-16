@@ -3,9 +3,7 @@
 #include "Cave.h"
 #include "Hazard.h"
 #include <string>
-//
-#include "overloadingAllocations.h"
-//
+#include "overloadingAllocations_cpp.h"
 using namespace std;
 
 class Hazard;
