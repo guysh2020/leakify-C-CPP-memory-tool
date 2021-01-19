@@ -8,8 +8,6 @@
 
 void openFile();
 
-void startRunning();
-
 void *my_malloc(std::size_t size, const char *file, int line, const char *func);
 
 void *my_calloc(std::size_t count, std::size_t size, const char *file, int line, const char *func);

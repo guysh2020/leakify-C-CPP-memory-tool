@@ -8,31 +8,34 @@
 
 FILE* openFile()
 {
-    FILE* fp = fopen(FILE_NAME,"a");
-    return fp;
-}
-
-void startRunning()
-{
-    // FILE* fp = fopen(FILE_NAME,"a");
-    // std::string file = __FILE__;
-    FILE *fp = openFile();
-    fprintf(fp,"***new running***\n");
+    try {
+        FILE* fp = fopen(FILE_NAME,"a");
+        return fp;
+    } catch(const std::exception& e) {
+        std::cout << e.what();
+    }
 }
 
 void *my_malloc(size_t size, const char *file, int line, const char *func)
 {
     FILE *fp = openFile();
     void *p = malloc(size);
+    if(p == NULL) {
+        return NULL;
+    }
     fprintf(fp, "0 Allocated =%s,%i,%s,#%p[%li]\n", file, line, func, p, size);
     fclose(fp);
 
     return p;
 }
+
 void *my_calloc(size_t count, size_t size, const char *file, int line, const char *func)
 {
     FILE *fp = openFile();
     void *p = calloc(count, size);
+    if(p == NULL) {
+        return NULL;
+    }
     fprintf(fp, "0 Allocated =%s,%i,%s,#%p[%li]\n", file, line, func, p, size);
     fclose(fp);
 
@@ -52,6 +55,9 @@ void *operator new(std::size_t sz, const char *file, int line, const char *func)
 {
     FILE *fp = openFile();
     void *ptr = std::malloc(sz);
+    if(ptr == NULL) {
+        return NULL;
+    }
     fprintf(fp, "0 Allocated =%s,%i,%s,#%p[%li]\n", file, line, func, ptr, sz);
     fclose(fp);
 
@@ -60,8 +66,11 @@ void *operator new(std::size_t sz, const char *file, int line, const char *func)
 
 void *operator new[](std::size_t sz,const char *file, int line, const char *func)
 {
-    void *ptr = std::malloc(sz);
     FILE *fp = openFile();
+    void *ptr = std::malloc(sz);
+        if(ptr == NULL) {
+        return NULL;
+    }
     fprintf(fp, "0 Allocated =%s,%i,%s,#%p[%li]\n", file, line, func, ptr, sz);
     fclose(fp);
 

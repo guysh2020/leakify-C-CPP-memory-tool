@@ -7,14 +7,18 @@
 FILE* openFile()
 {
     FILE* fp = fopen(FILE_NAME,"a");
+    if(fp == NULL)
+        printf("Exception happened\n");
     return fp;
 }
 
 void* my_malloc(size_t size, const char *file, int line, const char *func)
 {
-    printf("%s","here");
     FILE *fp = openFile();
     void *p = malloc(size);
+    if(p == NULL) {
+        return NULL;
+    }
     fprintf (fp,"0 Allocated = %s, %i, %s, #%p[%li]\n", file, line, func, p, size);
     fclose(fp);
 
@@ -26,6 +30,9 @@ void *my_calloc(size_t count, size_t size, const char *file, int line, const cha
 {
     FILE *fp = openFile();
     void *p = calloc(count, size);
+    if(p == NULL) {
+        return NULL;
+    }
     fprintf(fp, "0 Allocated =%s,%i,%s,#%p[%li]\n", file, line, func, p, size);
     fclose(fp);
 
