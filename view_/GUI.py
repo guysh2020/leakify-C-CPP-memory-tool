@@ -67,8 +67,22 @@ class GUI:
                                "4. Gcc installed on your computer"
         text_deatils.place(x=410, y=250, width=400, height=100)
 
-        button_run = tk.Button(self.root, command=self.button_run_command)
+        checkBox_interactive_bool = tk.BooleanVar()
+        checkBox_interactive_bool.set(False)
 
+        checkBox_interactive=tk.Checkbutton(self.root, command=self.checkBox_interactive_command, var=checkBox_interactive_bool)
+        ft = tkFont.Font(family='Copperplate Gothic Light', size=10)
+        checkBox_interactive["font"] = ft
+        checkBox_interactive["fg"] = "#333333"
+        checkBox_interactive["justify"] = "center"
+        checkBox_interactive["text"] = "Interactive"
+        checkBox_interactive.place(x=930,y=170,width=200,height=25)
+        checkBox_interactive["offvalue"] = "0"
+        checkBox_interactive["onvalue"] = "1"
+
+
+
+        button_run = tk.Button(self.root, command=self.button_run_command)
         button_run["bg"] = "#424d4c"
         ft = tkFont.Font(family='Copperplate Gothic Light', size=23)
         button_run["font"] = ft
@@ -101,6 +115,10 @@ class GUI:
 
         for file in listFiles:
             Lb1.insert(1, file)
+
+    def checkBox_interactive_command(self):
+        self.controller.set_interactive()
+        # print("Interactive")
 
     def button_run_command(self):
         Lb1 = tk.Listbox(self.root)
