@@ -26,15 +26,19 @@ class AllocationsOverloading(AlgorithmInterface):
     def run(self):
         self.pre_process()
         self.compile()
-        self.run_interactive_user_file()
+        if self.interactive:
+            self.run_interactive_user_file()
+        else:
+            self.run_user_file()
+
         return self.find_leaks()
 
 
     def set_path(self, path):
         self.path_to_folder = path
 
-    def set_interactive(self, interactive):
-        self.interactive = interactive
+    def set_interactive(self):
+        self.interactive = not self.interactive
 
     def pre_process(self):
 

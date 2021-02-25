@@ -3,6 +3,8 @@ import tkinter as tk
 import tkinter.font as tkFont
 from tkinter import Menu, messagebox
 from tkinter import filedialog
+from tkinter.messagebox import showinfo
+
 
 class GUI:
     def __init__(self, controller):
@@ -118,9 +120,9 @@ class GUI:
 
     def checkBox_interactive_command(self):
         self.controller.set_interactive()
-        # print("Interactive")
 
     def button_run_command(self):
+
         Lb1 = tk.Listbox(self.root)
         ft = tkFont.Font(family='Berlin Sans FB', size=12)
         Lb1["font"] = ft
@@ -150,4 +152,7 @@ class GUI:
         result = tk.messagebox.askquestion("Message", "Do you want to check another program?", icon='warning')
         if result == 'no':
             quit()
+
+
+
 
