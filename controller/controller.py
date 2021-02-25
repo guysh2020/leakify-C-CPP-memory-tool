@@ -27,4 +27,4 @@ class Controller():
         self.view = view
 
     def set_interactive(self):
-        self.model.set_interactive(True)
+        self.model.set_interactive()

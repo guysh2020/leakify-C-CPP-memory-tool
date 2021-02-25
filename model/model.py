@@ -15,8 +15,8 @@ class Model:
         self.lost_allocations = self.algorithm.run()
         return self.generate_log()
 
-    def set_interactive(self, interactive):
-        self.algorithm.set_interactive(interactive)
+    def set_interactive(self):
+        self.algorithm.set_interactive()
 
     def save_log(self, path):
         try:
