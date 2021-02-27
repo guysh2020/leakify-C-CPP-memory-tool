@@ -5,8 +5,7 @@ class Model:
     def __init__(self):
         self.path = ''
         self.algorithm = AllocationsOverloading()
-        self.lost_allocations = list()
-        self.log = []
+        self.lost_allocations = []
 
     def set_path(self, path):
         self.algorithm.set_path(path)
@@ -27,7 +26,7 @@ class Model:
             print("error writing to file")
 
     def generate_log(self):
+        self.log =[]
         for aloc in self.lost_allocations:
-            # self.log.append(self.lost_allocations[aloc])
             self.log.append(f'in module: {self.lost_allocations[aloc].module}, in function: {self.lost_allocations[aloc].function}, in line: {self.lost_allocations[aloc].line}, {self.lost_allocations[aloc].size} Bytes were allocated but never freed\n')
         return self.log
