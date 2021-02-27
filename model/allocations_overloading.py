@@ -5,7 +5,6 @@ import shutil
 
 from state import State
 from allocation import Allocation
-# from .release import Release
 from algorithm import AlgorithmInterface
 
 
@@ -113,6 +112,7 @@ class AllocationsOverloading(AlgorithmInterface):
         return allocations
 
     def get_files(self):
+        self.files = []
         for root, dirs, files in os.walk(self.path_to_folder):
             for file in files:
                 if file.endswith(".cpp") or file.endswith(".c") or file.endswith(".h"):

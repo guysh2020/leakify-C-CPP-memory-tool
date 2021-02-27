@@ -129,6 +129,7 @@ class GUI:
         Lb1.place(x=0, y=420, width=800, height=228)
 
         errors = self.controller.find_errors()
+
         for i in errors or []:
             Lb1.insert(1, i)
 

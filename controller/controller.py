@@ -12,7 +12,6 @@ class Controller():
     def run(self):
         self.view.create()
         self.view.root.mainloop()
-        # self.root.mainloop()
 
     def set_path(self, path):
         self.model.set_path(path)
