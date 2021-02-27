@@ -3,7 +3,6 @@ import tkinter as tk
 import tkinter.font as tkFont
 from tkinter import Menu, messagebox
 from tkinter import filedialog
-from tkinter.messagebox import showinfo
 
 
 class GUI:
